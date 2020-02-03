@@ -35,6 +35,9 @@ public class RegisterPOM {
 	@FindBy(id="last_name")
 	private WebElement lastName;
 	
+	@FindBy(id="url")
+	private WebElement website;
+	
 	@FindBy(xpath="//button[contains(text(),'Show password')]")
 	private WebElement showPassword;
 	
@@ -52,6 +55,16 @@ public class RegisterPOM {
 	
 	@FindBy(xpath="//div[@id='message']/child::p")
 	private WebElement message;
+	
+	@FindBy(linkText="All Users")
+	private WebElement allUsers;
+	
+	@FindBy(id="user-search-input")
+	private WebElement createdUser;
+	
+	@FindBy(id="search-submit")
+	private WebElement searchSubmit;
+	
 	
 	public void clickOnUsers() throws InterruptedException {
 		this.users.click();
@@ -84,6 +97,11 @@ public class RegisterPOM {
 		
 	}
 	
+	public void sendWebsite(String website) {
+		this.website.clear();
+		this.website.sendKeys(website);
+	}
+	
 	public void clickShowPassword() throws InterruptedException {
 		//Thread.sleep(3000);
 		this.showPassword.click();
@@ -114,4 +132,16 @@ public class RegisterPOM {
 		
 	}
 
+	public void clickAllUsers() {
+		this.allUsers.click();
+	}
+	
+	public void searCreatedUser(String createdUser) {
+		this.createdUser.clear();
+		this.createdUser.sendKeys(createdUser);
+	}
+	
+	public void clickSearchSubmit() {
+		this.searchSubmit.click();
+	}
 }

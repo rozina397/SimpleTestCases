@@ -1,0 +1,169 @@
+package com.training.pom;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class AddAndViewPropertyPOM {
+	
+	private WebDriver driver;
+	private Actions act;
+	
+	public AddAndViewPropertyPOM(WebDriver driver) {
+		this.driver=driver;
+		PageFactory.initElements(driver, this);
+		}
+	
+	
+	@FindBy(xpath="//div[contains(text(),'Properties')]")
+	private WebElement properties;
+	
+	@FindBy(linkText="Add New")
+	private WebElement addNew;
+	
+	@FindBy(name="post_title")
+	private WebElement enterTitle;
+	
+	@FindBy(id="content")
+	private WebElement textBox;
+	
+	@FindBy(id="_price")
+	private WebElement price;
+	
+	@FindBy(id="_price_per")
+	private WebElement pricePerSq;
+	
+	@FindBy(xpath="//*[contains(text(),'Main Details')]")
+	private WebElement mainDetails;
+	
+	@FindBy(name="_status")
+	private WebElement status;
+	
+	@FindBy(name="_location")
+	private WebElement location;
+	
+	@FindBy(name="_possession")
+	private WebElement possession;
+	
+	@FindBy(xpath="//*[contains(text(),'Location')]")
+	private WebElement locationTab;
+	
+	@FindBy(name="_friendly_address")
+	private WebElement address;
+	
+	@FindBy(id="_address")
+	private WebElement mapAddress;
+	
+	@FindBy(id="_geolocation_lat")
+	private WebElement latitude;
+	
+	@FindBy(id="_geolocation_long")
+	private WebElement longitude;
+	
+	@FindBy(linkText="Details")
+	private WebElement detailsTab;
+	
+	@FindBy(id="_storage_room")
+	private WebElement storageRoom;
+	
+	@FindBy(xpath="//label[contains(text(),' Central Bangalore')]/child::input")
+	private WebElement centralBangalore;
+	
+	@FindBy(id="publish")
+	private WebElement publish;
+	
+	@FindBy(linkText="All Properties")
+	private WebElement allProperties;
+	
+
+	
+	public void mouseHoverProperties() {
+		act=new Actions(driver);
+		act.moveToElement(this.properties).build().perform();
+	}
+	
+	public void clikAddNewLink() {
+		this.addNew.click();
+	}
+	
+	public void sendTitle(String enterTitle) {
+		this.enterTitle.sendKeys(enterTitle);
+	}
+	
+	public void writeIntoTextbox(String textBox) {
+		this.textBox.sendKeys(textBox);
+	}
+	
+	public void sendPrice(String price) {
+		this.price.sendKeys(price);
+	}
+	
+	public void sendPricePerSq(String pricePerSq) {
+		this.pricePerSq.sendKeys(pricePerSq);
+	}
+	
+	public void clickMainDetails() {
+		this.mainDetails.click();
+	}
+	
+	public void sendStatus(String status) {
+		this.status.sendKeys(status);
+	}
+	
+	public void sendLocation(String location) {
+		this.location.sendKeys(location);
+	}
+	
+	public void sendPossession(String possession) {
+		this.possession.sendKeys(possession);
+	}
+	
+	public void clickLocationTab() {
+		this.locationTab.click();
+	}
+
+	public void sendAddress(String address) {
+		this.address.sendKeys(address);
+	}
+	
+	public void sendMapAddress(String mapAddress) {
+		this.mapAddress.sendKeys(mapAddress);
+	}
+	
+	public void sendLatitude(String latitude) {
+		this.latitude.sendKeys(latitude);
+	}
+	
+	public void sengLongitude(String longitude) {
+		this.longitude.sendKeys(longitude);
+	}
+	
+	public void clickDetailsTab() {
+		this.detailsTab.click();
+	}
+	
+	public void sendStorageRoom(String storageRoom) {
+		this.storageRoom.sendKeys(storageRoom);
+	}
+	
+	
+	//select Central Bangalore checkBox  inside KeywordTgs
+	public void selectRegion() throws InterruptedException {
+		Thread.sleep(3000);
+		this.centralBangalore.click();
+	}
+	
+	public void clickPublish() {
+		this.publish.click();
+	}
+	
+	public void clickAllPropertiesLink() {
+		this.allProperties.click();
+		driver.switchTo().alert().accept();
+	}
+}
