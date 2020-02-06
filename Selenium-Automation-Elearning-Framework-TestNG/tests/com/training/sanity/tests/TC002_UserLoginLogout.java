@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -27,7 +28,7 @@ public class TC002_UserLoginLogout {
 	
 	
 
-	@BeforeTest
+	@BeforeClass
 	public void setUpBeforeClass() throws IOException {
 		properties = new Properties();
 		FileInputStream inStream = new FileInputStream("./resources/others.properties");
@@ -49,7 +50,7 @@ public class TC002_UserLoginLogout {
 	@Test(priority=1)
 	public void Login() throws IOException {						//log in as a user
 		loginPOM.clickRigisterLoginBtn();
-		loginPOM.sendUserName("rozina");
+		loginPOM.sendUserName("newuser");
 		loginPOM.sendPassword("abcd1234");
 		loginPOM.clickLoginBtn();
 		//screenshot

@@ -1,8 +1,11 @@
 package com.training.pom;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -74,13 +77,15 @@ public class AddAndViewPropertyPOM {
 	@FindBy(xpath="//label[contains(text(),' Central Bangalore')]/child::input")
 	private WebElement centralBangalore;
 	
-	@FindBy(id="publish")
+	@FindBy(xpath="//input[@id='publish']")
 	private WebElement publish;
 	
 	@FindBy(linkText="All Properties")
 	private WebElement allProperties;
 	
-
+	@FindBy(xpath="//input[@id='post-search-input']")
+	private WebElement search;
+	
 	
 	public void mouseHoverProperties() {
 		act=new Actions(driver);
@@ -163,7 +168,46 @@ public class AddAndViewPropertyPOM {
 	}
 	
 	public void clickAllPropertiesLink() {
+		
 		this.allProperties.click();
 		driver.switchTo().alert().accept();
+		
 	}
+	
+	public void searchProperty(String propertryTitle) {
+		this.search.sendKeys(propertryTitle);
+		driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+		act=new Actions(driver);
+		act.sendKeys(Keys.ENTER).build().perform();
+		driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+	}
+	
+	
+	public boolean isViewAddedProperty(String propertyTitle) {
+		boolean found = false;
+		String before="//tbody[@id='the-list']/tr";
+		String after="]/td[1]/strong[1]/a[1]"	;
+		int count=driver.findElements(By.xpath(before)).size();
+		for(int i=1;i<=count;i++) {
+			
+			try {
+			String title=driver.findElement(By.xpath(before+"["+i+after)).getText();
+			
+			if(title.equals(propertyTitle)) 
+			{
+			    return true;
+			   
+				}
+			
+			}catch(NoSuchElementException e)
+			{
+				found=false;
+			
+				}
+		}
+		return found;
+			
+	}
+		
+		
 }

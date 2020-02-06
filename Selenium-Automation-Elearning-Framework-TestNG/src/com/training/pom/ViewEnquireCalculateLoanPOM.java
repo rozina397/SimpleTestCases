@@ -2,20 +2,25 @@ package com.training.pom;
 
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 public class ViewEnquireCalculateLoanPOM {
 	private WebDriver driver;
-	private Actions act;
+	public Actions act;
+	
+	
 	
 	public ViewEnquireCalculateLoanPOM(WebDriver driver) {
+		
 		this.driver=driver;
 		PageFactory.initElements(driver, this);
 	}
@@ -28,7 +33,7 @@ public class ViewEnquireCalculateLoanPOM {
 	private WebElement nullamApart;
 	
 	@FindBy(xpath="//div[@class='col-md-12']//div//button[@aria-label='Next']")
-	private WebElement loadImage;
+	private WebElement nextImage;
 	
 	@FindBy(name="your-name")
 	private WebElement name;
@@ -66,6 +71,7 @@ public class ViewEnquireCalculateLoanPOM {
 	@FindBy(xpath="//strong[contains(@class,'calc-output')]")
 	private WebElement monthlyPayment;
 	
+	
 	public void mouseHoverNewLaunch() throws InterruptedException {
 		act=new Actions(driver);
 		act.moveToElement(this.newLaunch).build().perform();
@@ -75,8 +81,10 @@ public class ViewEnquireCalculateLoanPOM {
 		this.nullamApart.click();
 	}
 	
-	public void clickNextImage() {
-		this.loadImage.click();
+	public void clickNextImage(){
+		act=new Actions(driver);
+		act.moveToElement(this.nextImage).build().perform();
+		this.nextImage.click();
 	}
 	
 	public void sendName(String name) {
@@ -127,13 +135,13 @@ public class ViewEnquireCalculateLoanPOM {
 	
 	public void clickCalculate() {
 		this.calculate.click();
+		act=new Actions(driver);
+		act.sendKeys(Keys.PAGE_DOWN).build().perform();
 	}
 	
-	public void successMessage(){
-		
-		WebDriverWait ewait=new WebDriverWait(driver,50);
+	public String successMessage(){
+		WebDriverWait ewait=new WebDriverWait(driver,100);
 		ewait.until(ExpectedConditions.visibilityOf(this.monthlyPayment));
-		Assert.assertEquals(this.displayMessage.getText(), "Monthly Payment: 1667.11 Rs.");
-		System.out.println(this.displayMessage.getText());
+		return this.displayMessage.getText();
 	}
 }

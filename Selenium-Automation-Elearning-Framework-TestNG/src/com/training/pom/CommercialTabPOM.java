@@ -1,23 +1,29 @@
 package com.training.pom;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 public class CommercialTabPOM {
 	
 	private WebDriver driver;
+	private Actions act;
 	
 	public CommercialTabPOM(WebDriver driver) {
 		this.driver=driver;
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(linkText="Commercial")
+	@FindBy(xpath="//a[contains(text(),'Commercial')]")
 	private WebElement commercialLink;
 	
 	@FindBy(id="keyword_search")
@@ -48,11 +54,9 @@ public class CommercialTabPOM {
 	@FindBy(xpath="//*[@type='submit']")
 	private WebElement send;
 	
-	@FindBy(xpath="//input[@type=\"submit\"]/parent::p/following-sibling::div")
-	private WebElement alert;
+	@FindBy(xpath="//form[@method='post']/child::p/following-sibling::div")
+	private WebElement contactFormMessage;
 	
-	@FindBy(xpath="//ul//li/child::a[contains(text(),'Villas')]")
-	private WebElement villasTab;
 	
 	public void clickCommercialTab() {
 		this.commercialLink.click();
@@ -67,6 +71,11 @@ public class CommercialTabPOM {
 		//Thread.sleep(3000);
 		this.searchButton.click();
 		System.out.println(this.message.getText());
+	}
+	
+	public String searchResult() {
+		driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+		return this.message.getText();
 	}
 	
 	public void clickDropLine() {
@@ -93,14 +102,16 @@ public class CommercialTabPOM {
 		this.messageText.sendKeys(messageText);
 	}
 	
-	public void clcikSend() throws InterruptedException {
+	public void clickSend() throws InterruptedException {
 		this.send.click();
-		Thread.sleep(3000);
-		Assert.assertEquals(this.alert.getText(), "There was an error trying to send your message. Please try again later.");
-		System.out.println(this.alert.getText());
+		act=new Actions(driver);
+		act.sendKeys(Keys.PAGE_DOWN).build().perform();
+		
 	}
 	
-	public void clickVillasTab() {
-		this.villasTab.click();
+	public String message() {
+		WebDriverWait ewait=new WebDriverWait(driver,50);
+		ewait.until(ExpectedConditions.visibilityOf(this.contactFormMessage));
+		return this.contactFormMessage.getText();
 	}
 }

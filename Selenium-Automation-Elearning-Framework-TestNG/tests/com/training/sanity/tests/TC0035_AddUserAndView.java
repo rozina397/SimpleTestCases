@@ -1,47 +1,34 @@
 package com.training.sanity.tests;
 
 import java.io.IOException;
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.Test;
 
+import com.relevantcodes.extentreports.LogStatus;
 import com.training.pom.RegisterPOM;
 
-public class TC0035_AddUserAndView extends AdminLoginLogout{
-	private RegisterPOM registerPOM;
+public class TC0035_AddUserAndView extends TestCase_001_Register{
+
+
 	
-	
-//	@BeforeTest
-//	public void setUpBeforeTest() throws IOException {
-//		//create objects for POM files
-//		registerPOM=new RegisterPOM(driver);
-//		
-//		
-//	}
-	
-	@Test(priority=2,dependsOnMethods="adminLogin")                                           //create a new user
-	public void registerNewUser() throws InterruptedException, IOException {
+	@Test(priority=3)                                           
+	public void viewAddedNewUser() throws InterruptedException, IOException {
+		logger=extent.startTest("TO verify whether application allows admin to view added user in all Users module");
 		registerPOM=new RegisterPOM(driver);
-		registerPOM.clickOnUsers();
-		registerPOM.clickAddNewUsers();
-		registerPOM.sendUserName("rozina");
-		registerPOM.sendEmail("rozina@gmail.com");
-		registerPOM.sendFirstName("rozina");
-		registerPOM.sendLastNmae("khatun");
-		registerPOM.sendWebsite("www.google.com");
-		registerPOM.clickShowPassword();
-		registerPOM.sendPassword("abcd1234");
-		registerPOM.clickCheckBox();  
-		JavascriptExecutor js=(JavascriptExecutor)driver;                   
-		js.executeScript("window.scrollTo(0,document.body.scrollHeight)");		//scroll down
-		registerPOM.clickToselectRole();
-		registerPOM.clickSubmitBtn();
-		//screenshot
-		screenShot.captureScreenShot("First");
 		registerPOM.clickAllUsers();
-		registerPOM.searCreatedUser("rozina");
+		registerPOM.searCreatedUser("newuser");
 		registerPOM.clickSearchSubmit();
+		if(registerPOM.isViewAddedUser("newuser")) {
+			logger.log(LogStatus.PASS, "found added user");
+		}
+		else {
+			logger.log(LogStatus.FAIL, "not found added user");
+		}
+		
 		//screenshot
-		screenShot.captureScreenShot("Display created user");
+		screenShot.captureScreenShot("TC0035");
+		extent.endTest(logger);
+
+	
 	}
 
 }

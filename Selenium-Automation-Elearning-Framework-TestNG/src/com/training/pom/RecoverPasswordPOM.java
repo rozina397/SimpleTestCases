@@ -29,7 +29,7 @@ private WebDriver driver;
 	@FindBy(className="lostpassword-button")
 	private WebElement resetPassword;
 	
-	@FindBy(xpath="//p")
+	@FindBy(xpath="//article[@id='post-124']")
 	private WebElement errorMessage;
 	
 	public void clickRigisterLoginBtn() {    

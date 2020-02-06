@@ -2,6 +2,7 @@ package com.training.pom;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -127,12 +128,34 @@ public class RegisterPOM {
 	
 	public void clickSubmitBtn() {
 		this.submit.click();
-		System.out.println(this.message.getText());
+		//System.out.println(this.message.getText());
+		//Assert.assertEquals(this.message.getText(), "New user created. Edit user");
+	}
+	
+	public boolean isCreated() {
+	/*	try {
 		Assert.assertEquals(this.message.getText(), "New user created. Edit user");
+		}
+		catch(NoSuchElementException e) {
+			
+		}*/
+//		String confirmMessgae=this.message.getText();
+//		return confirmMessgae;
+		boolean created=false;
+		try {
+			if(this.message.getText().equalsIgnoreCase("New user created. Edit user"))
+			{
+			created=true;
+			}
+		}catch(NoSuchElementException e){
+			created=false;
+		}
+		return created;
 		
 	}
 
 	public void clickAllUsers() {
+		this.users.click();
 		this.allUsers.click();
 	}
 	
@@ -144,4 +167,27 @@ public class RegisterPOM {
 	public void clickSearchSubmit() {
 		this.searchSubmit.click();
 	}
+	
+	public boolean isViewAddedUser(String username) {
+		boolean found = false;
+			String before="//tbody[@id='the-list']/tr";
+			String after="]/td[1]/strong[1]/a[1]"	;
+			int count=driver.findElements(By.xpath(before)).size();
+			try
+			{
+			for(int i=1;i<=count;i++) {
+				String userName=driver.findElement(By.xpath(before+"["+i+after)).getText();
+				if(userName.equals(username)) {
+				    found=true;
+				    break;
+				}
+			}
+			}catch(NoSuchElementException e)
+			{
+				found=false;
+			
+				}
+			return found;
+		}
+	
 }

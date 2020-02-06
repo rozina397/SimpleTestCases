@@ -5,30 +5,28 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
+import com.relevantcodes.extentreports.LogStatus;
 import com.training.pom.RegisterPOM;
 
 public class TestCase_001_Register extends AdminLoginLogout{
 	
 
-	private RegisterPOM registerPOM;
+	public RegisterPOM registerPOM;
 	
-	@AfterTest
-	public void tearDown(){
-		driver.quit();
-	} 
 	
 
 	
-	@Test(priority=2,dependsOnMethods="adminLogin")                                           //create a new user
+	@Test(priority=2)                                           //create a new user
 	public void registerNewUser() throws InterruptedException, IOException {
+		logger=extent.startTest("adding the new user");
 		registerPOM=new RegisterPOM(driver);
-		
 		registerPOM.clickOnUsers();
 		registerPOM.clickAddNewUsers();
-		registerPOM.sendUserName("rozina");
-		registerPOM.sendEmail("rozina@gmail.com");
-		registerPOM.sendFirstName("rozina");
-		registerPOM.sendLastNmae("khatun");
+		registerPOM.sendUserName("newuser");
+		registerPOM.sendEmail("newuser@gmail.com");
+		registerPOM.sendFirstName("newuser");
+		registerPOM.sendLastNmae("newuser");
+		registerPOM.sendWebsite("www.google.com");
 		registerPOM.clickShowPassword();
 		registerPOM.sendPassword("abcd1234");
 		registerPOM.clickCheckBox();  
@@ -36,9 +34,16 @@ public class TestCase_001_Register extends AdminLoginLogout{
 		js.executeScript("window.scrollTo(0,document.body.scrollHeight)");		//scroll down
 		registerPOM.clickToselectRole();
 		registerPOM.clickSubmitBtn();
-		//screenshot
-		screenShot.captureScreenShot("First");
-		
+		registerPOM.isCreated();
+		if(registerPOM.isCreated())
+		{
+			logger.log(LogStatus.PASS, "new user created");
+		}
+		else {
+			logger.log(LogStatus.FAIL, "unable to create new user");
+		}
+		screenShot.captureScreenShot("TC001");
+		extent.endTest(logger);
 	}
 	
 }

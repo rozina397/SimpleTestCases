@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.training.sanity.tests.TC005_PasswordChange">
+      <class name="com.training.sanity.tests.TC0033_ViewAddedPropertyDetails">
         <methods>
-          <include name="setUpBeforeClass"/>
+          <include name="setUpBeforeTest"/>
           <include name="tearDown"/>
-          <include name="ChangePassword"/>
+          <include name="viewPropertyDeatils"/>
         </methods>
-      </class> <!-- com.training.sanity.tests.TC005_PasswordChange -->
+      </class> <!-- com.training.sanity.tests.TC0033_ViewAddedPropertyDetails -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

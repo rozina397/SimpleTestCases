@@ -9,7 +9,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.relevantcodes.extentreports.ExtentReports;
@@ -27,21 +26,17 @@ public class TC0034_CommercialTab {
 	public static Properties properties;
 	public ScreenShot screenShot;
 	public CommercialTabPOM commercialTabPOM;	
+	private ExtentReports extent;
+    private ExtentTest logger;
 	
 	@BeforeClass
 	public void setUpBeforeTest() throws IOException {
-		ExtentReports extent;
-        ExtentTest logger;
-        extent=new ExtentReports(System.getProperty("user.dir")+"//test-output/TC0034.html");
-        extent.loadConfig(new File(System.getProperty("user.dir")+"//extent-config.xml"));
-		
-		
+		extent=new ExtentReports(System.getProperty("user.dir")+"/test-output/rozina.html",true);
+		extent.loadConfig(new File(System.getProperty("user.dir")+"\\extent-config.xml"));
+		logger=extent.startTest("launching the browser");
 		properties = new Properties();
 		FileInputStream inStream = new FileInputStream("./resources/others.properties");
 		properties.load(inStream);
-		
-		logger = extent.startTest("Launch Browser");
-		
 		driver = DriverFactory.getDriver(DriverNames.CHROME);
 		baseUrl = properties.getProperty("baseURL");
 		screenShot = new ScreenShot(driver); 
@@ -49,30 +44,42 @@ public class TC0034_CommercialTab {
 		commercialTabPOM=new CommercialTabPOM(driver);
 		//open url
 		driver.get(baseUrl);
-		
-		logger.log(LogStatus.PASS, baseUrl);
-        extent.endTest(logger);
-		
+		logger.log(LogStatus.INFO, "oppend: "+driver.getCurrentUrl());
+		extent.endTest(logger);
+	
 	}
 	
 	
 	@Test
 	public void commercialTab() throws InterruptedException {
+		logger=extent.startTest("To verify whether application allows to search details & fill enquiry details in Commercial tab");
 		commercialTabPOM.clickCommercialTab();
 		commercialTabPOM.eneterAddress("Nullam hendrerit apartment");
 		commercialTabPOM.clcikSearchButton();
+		logger.log(LogStatus.INFO,commercialTabPOM.searchResult()+" for search result");
 		JavascriptExecutor js=(JavascriptExecutor)driver;
 		js.executeScript("window.scrollTo(0,200)");
 		commercialTabPOM.clickDropLine();
+		logger.log(LogStatus.INFO, "filling the contact form");
 		commercialTabPOM.sendName("rozina");
 		commercialTabPOM.sendEmail("rozina@gmail.com");
 		commercialTabPOM.sendSubject("apartment");
 		commercialTabPOM.sendMessage("looking for apartment");
-		commercialTabPOM.clcikSend();
+		commercialTabPOM.clickSend();
+		logger.log(LogStatus.INFO, commercialTabPOM.message());
+		extent.endTest(logger);
+		//screenshot
+		screenShot.captureScreenShot("TC0034");
+		
 	}
 
 	@AfterClass
 	public void closeBrowser() {
+		logger=extent.startTest("closing the browser");
 		driver.close();
+		logger.log(LogStatus.INFO, "closed the browser");
+		extent.endTest(logger);
+		extent.flush();
+		extent.close();
 	}
 }
